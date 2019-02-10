@@ -1,48 +1,53 @@
-let canvasWidth = 1500;
-let canvasHeight = 1000;
-let backgroundColor = 125
+var config = {
+    type: Phaser.AUTO,
+    width: 800,
+    height: 600,
+    backgroundColor: '#2d2d2d',
+    parent: 'phaser-example',
+    scene: {
+        preload: preload,
+        create: create,
+        update: update
+    }
+};
 
-let arrayOfObstacles = [];
+let game = new Phaser.Game(config);
 
 
-class knife {
-
-  constructor() {
-
-    this.pos = [200, canvasHeight/2]
-    this.width = 20;
-
-  }
-
-  display() {
-    stroke(255)
-    fill(255)
-    ellipse(this.pos[0], this.pos[1], this.width)
-  }
+function preload () {
 
 }
 
+function create () {
+
+  let circleFill = this.add.graphics({ fillStyle: { color: 0xff0000 } });
+
+  class knife {
+
+    constructor() {
+      this.x = 100;
+      this.y = 300;
+      this.width = 25;
+    }
+
+    display() {
+
+      let circle = new Phaser.Geom.Circle(this.x, this.y, this.width);
+      circleFill.fillCircleShape(circle);
+
+    }
+  }
 
 
-let enemy = new knife();
+
+  let kn = new knife();
+  kn.display()
 
 
-function setup() {
-  angleMode(DEGREES);
-  createCanvas(canvasWidth,canvasHeight);
-  background(backgroundColor);
-  noFill();
-  stroke(255);
 
 }
 
-function draw() {
-  if (arrayOfObstacles.length == 0) {
-    arrayOfObstacles[0] = new knife()
-  }
+function update () {
 
-  arrayOfObstacles[0].display();
-
-  //background(backgroundColor)
 
 }
