@@ -1,53 +1,42 @@
-var config = {
-    type: Phaser.AUTO,
-    width: 800,
-    height: 600,
-    backgroundColor: '#2d2d2d',
-    parent: 'phaser-example',
-    scene: {
-        preload: preload,
-        create: create,
-        update: update
-    }
-};
+let canvasWidth = 1000;
+let canvasHeight = 500;
 
-let game = new Phaser.Game(config);
-
-
-function preload () {
-
-}
-
-function create () {
-
-  let circleFill = this.add.graphics({ fillStyle: { color: 0xff0000 } });
-
-  class knife {
-
-    constructor() {
-      this.x = 100;
-      this.y = 300;
-      this.width = 25;
-    }
-
-    display() {
-
-      let circle = new Phaser.Geom.Circle(this.x, this.y, this.width);
-      circleFill.fillCircleShape(circle);
-
-    }
+class knife {
+  constructor(x = canvasWidth/10 , y = canvasHeight / 2, width = canvasWidth / 80) {
+    this.x = x;
+    this.y = y;
+    this.width = width;
   }
 
+  display() {
+    fill(255)
+    ellipse(this.x,this.y,this.width,this.width)
+  }
 
+  moveRight() {
+    this.x++
+  }
+}
 
-  let kn = new knife();
-  kn.display()
+function setup() {
+
+  angleMode(DEGREES);
+  createCanvas(1000,500);
+  background(0);
+  noFill();
+  stroke(255);
+
+  kn1 = new knife();
+
 
 
 
 }
 
-function update () {
+function draw() {
+  background(0)
+  kn1.moveRight()
+  kn1.display()
 
 
 }
