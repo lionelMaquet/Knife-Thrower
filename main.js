@@ -37,12 +37,30 @@ class knife {
     this.trajectory = [x,y];
   }
 
+  reset() {
+    this.x = this.origX;
+    this.y = this.origY;
+    this.speed = this.origSpeed;
+    this.trajectory = [];
+    this.move = false;
+    this.loadingSpeed = false;
+    this.trajectorySet = false;
+  }
+
 }
 
 class target {
-  constructor(x = canvasWidth / 1.5, height = 50, speed = 1) {
+  constructor(x = canvasWidth / 1.5, height = 50, speed = 1, direction = "down") {
+
+    if (direction == "up") {
+      this.y = canvasHeight + height
+    } else if (direction == "down") {
+      this.y = 0
+    }
+
+
     this.x= canvasWidth - canvasWidth / 10;
-    this.y= 0;
+    this.direction = direction;
     this.width= 10;
     this.height= 50;
     this.origSpeed = speed;
@@ -53,8 +71,11 @@ class target {
     rect(this.x,this.y,this.width,this.height)
   }
 
-  moveDown() {
-    this.y += this.speed
+  move() {
+    if (this.direction == "down"){
+    this.y += this.speed}
+    else if (this.direction == "up") {
+    this.y -= this.speed }
   }
 }
 
@@ -84,24 +105,24 @@ function drawTrajectory() {
 }
 
 function loadSpeed() {
-  if (mouseIsPressed) {
+  if (mouseIsPressed && kn1.move == false) {
     kn1.loadingSpeed = true;
-    //if (kn1.speed < maxSpeed) {
-    kn1.speed+= 0.2
+    kn1.speed+= 0.8001
     kn1.speed =  kn1.speed % maxSpeed
 
-    //}
 
-  } else if (kn1.speed > kn1.origSpeed) {
+  } else if (kn1.speed != kn1.origSpeed) {
+
     if (kn1.trajectorySet == false) {
       kn1.setTrajectory(mouseX - kn1.origX,mouseY - kn1.origY );
       kn1.move = true
       kn1.trajectorySet = true;
     }
 
-
   }
 }
+
+
 
 
 
@@ -117,25 +138,30 @@ function setup() {
 
 
   kn1 = new knife();
-  target1 = new target(null,null,2);
+  target1 = new target(null,null,2, "up");
 
 
 }
 
 function draw() {
+
   background(0)
 
   kn1.display()
 
   target1.display()
 
-  target1.moveDown()
+  target1.move()
 
   kn1.throw()
 
   loadSpeed()
 
   drawTrajectory()
+
+  if (detectCollision() == 'win') {
+    kn1.reset()
+  }
 
 
 }
