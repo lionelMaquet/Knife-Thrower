@@ -232,7 +232,7 @@ function setup() {
 
 function draw() {
 
-  background(125,125,125)
+  background(150,150,150)
 
   kn1.display()
 
