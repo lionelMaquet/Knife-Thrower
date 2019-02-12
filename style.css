@@ -9,7 +9,10 @@ body {
   cursor: none;
 }
 
-p {
+a {
   position: absolute;
   color: white;
+  left: 30px;
+  bottom: 10px;
+  font-size: 30px;
 }
