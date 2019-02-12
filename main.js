@@ -1,10 +1,11 @@
 let canvasWidth = window.innerWidth;
 let canvasHeight = window.innerHeight;
 
+
 let maxSpeed = 30;
 
 let origTargetHeight = 200;
-let origtTargetX = 500;
+let origtTargetX = canvasWidth/1.5;
 let origTargetSpeed = 2;
 
 let targetHeight = origTargetHeight;
@@ -20,7 +21,14 @@ let knifeColor = [0,0,0];
 let targetColor = [255,255,255];
 let hitTargetColor = [0,255,44]
 let loadColor = [255,0,0];
+let savePlatformColor = [49,131,232];
 
+
+let congratulations = {
+  list : ["Nice!", "Well done!", "Good job!", "Wow!", "What a boss!", "Amazing!", "Lovely!", "Incredible!","Prodigious!","Stunning!","Unbelievable!","Wonderful!","Awesome!","Marvelous!","Impressive!","Remarkable!","Mind-blowing!","Breathtaking!","Majestic!"],
+  done: false,
+  randomCong :  function() { return congratulations.list[Math.floor(Math.random()*congratulations.list.length)]},
+}
 
 class knife {
   constructor(x = canvasWidth/10 , y = canvasHeight / 2, width = 10, speed = 2) {
@@ -125,6 +133,53 @@ class target {
 
 }
 
+let savePlatform = {
+  height: 100,
+  width : 10,
+  x: canvasWidth - 10,
+  y: 0,
+  speed: 5,
+  direction: "down",
+  color: savePlatformColor,
+  saved : false,
+  display : function() {
+    fill(this.color[0], this.color[1], this.color[2])
+    rect(this.x,this.y,this.width,this.height)
+  },
+
+  move : function() {
+
+    if (this.direction == "down"){
+      this.y += this.speed;
+
+      if ((this.y + this.height) > canvasHeight) {
+        this.direction = "up"
+      }
+    } else if (this.direction == "up") {
+
+        this.y -= this.speed;
+
+        if (this.y < 0) {
+          this.direction = "down"
+        }
+
+      }
+
+
+  },
+
+  savedBall : function() {
+
+    if ((kn1.x + kn1.width) > this.x && (kn1.y - kn1.width) > this.y && (kn1.y + kn1.width) < this.y + this.height) {
+      this.saved = true;
+      console.log("saved")
+    }
+
+
+  }
+
+}
+
 function detectCollision() {
 
   if ((kn1.x + kn1.width) > target1.x && (kn1.x - kn1.width) < (target1.x + target1.width) && (kn1.y - kn1.width) > target1.y && (kn1.y + kn1.width) < target1.y + target1.height) {
@@ -133,29 +188,58 @@ function detectCollision() {
     return 'win'
   }
 
+}
 
+function displayNice() {
+  if (kn1.hitTarget == true) {
+    if (congratulations.done == false) {
+      randCong = congratulations.randomCong()
+      congratulations.done = true;
+      hitSound.play();
+    }
+    fill(255)
+    textAlign(CENTER,CENTER)
+    textSize(50)
+    text(randCong, canvasWidth / 2,canvasHeight/2)
 
+  }
 }
 
 function nextLevel() {
 
   if ((kn1.x - kn1.width) > canvasWidth || (kn1.y - kn1.width) > canvasHeight || (kn1.y + kn1.width) < 0 ) {
 
+
     if (kn1.hitTarget == true) {
+
+
       targetHeight-= 5;
       targetSpeed+= 0.4;
-      targetX += 10;
+      //targetX += 10;
       kn1.reset();
       target1 = new target();
+      congratulations.done = false;
 
       score++;
 
       if (score > bestScore) {
         bestScore = score;
       }
+
+      savePlatform.saved = false;
+    }
+
+    else if (savePlatform.saved == true) {
+
+      saveSound.play()
+      kn1.reset();
+      target1 = new target();
+      savePlatform.saved = false;
+
     }
 
     else {
+
       targetHeight = origTargetHeight;
       targetX = origtTargetX;
       targetSpeed = origTargetSpeed;
@@ -221,10 +305,29 @@ function loadSpeed() {
 
 function displayScore() {
   fill(scoreColor[0],scoreColor[1],scoreColor[2])
+  textSize(20)
   text(score,50,50)
   text(bestScore, 50,100)
 }
 
+
+
+
+
+
+
+
+function preload() {
+
+  hitSound = new Howl({
+  src: ['./sounds/hit-target.flac']
+});
+
+  saveSound = new Howl({
+    src:['./sounds/saved-ball.wav']
+  })
+
+}
 
 function setup() {
 
@@ -263,8 +366,11 @@ function draw() {
 
   displayScore()
 
+  displayNice()
 
-
+  savePlatform.display()
+  savePlatform.move()
+  savePlatform.savedBall()
 
 
 }
