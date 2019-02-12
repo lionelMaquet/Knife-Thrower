@@ -14,6 +14,13 @@ let targetSpeed = origTargetSpeed;
 let score = 0;
 let bestScore = 0;
 
+let bgColor = [255,169,0]
+let scoreColor = [0,0,0];
+let knifeColor = [0,0,0];
+let targetColor = [255,255,255];
+let hitTargetColor = [0,255,44]
+let loadColor = [255,0,0];
+
 
 class knife {
   constructor(x = canvasWidth/10 , y = canvasHeight / 2, width = 10, speed = 2) {
@@ -35,7 +42,7 @@ class knife {
   }
 
   display() {
-    fill(0)
+    fill(knifeColor[0],knifeColor[1],knifeColor[2])
     ellipse(this.x,this.y,this.width,this.width)
   }
 
@@ -87,7 +94,7 @@ class target {
     this.origSpeed = targetSpeed;
     this.speed = targetSpeed;
 
-    this.color = [255,255,255]
+    this.color = targetColor;
   }
 
   display() {
@@ -122,7 +129,7 @@ function detectCollision() {
 
   if ((kn1.x + kn1.width) > target1.x && (kn1.x - kn1.width) < (target1.x + target1.width) && (kn1.y - kn1.width) > target1.y && (kn1.y + kn1.width) < target1.y + target1.height) {
     kn1.hitTarget = true;
-    target1.color = [0,255,0]
+    target1.color = hitTargetColor;
     return 'win'
   }
 
@@ -173,7 +180,7 @@ function drawTrajectory() {
 
   if (kn1.move == false) {
     // Speed indicator
-    fill(255,0,0)
+    fill(loadColor[0],loadColor[1],loadColor[2])
     ellipse(mouseX,mouseY,kn1.speed,kn1.speed)
 
     // Max speed indicator
@@ -200,6 +207,10 @@ function loadSpeed() {
   } else if (kn1.speed != kn1.origSpeed) {
 
     if (kn1.trajectorySet == false) {
+      if (kn1.speed < kn1.origSpeed) {
+        kn1.speed = kn1.origSpeed // prevents speed to be under min speed
+
+      }
       kn1.setTrajectory(mouseX - kn1.origX,mouseY - kn1.origY );
       kn1.move = true
       kn1.trajectorySet = true;
@@ -209,7 +220,7 @@ function loadSpeed() {
 }
 
 function displayScore() {
-  fill(0)
+  fill(scoreColor[0],scoreColor[1],scoreColor[2])
   text(score,50,50)
   text(bestScore, 50,100)
 }
@@ -219,7 +230,7 @@ function setup() {
 
   angleMode(DEGREES);
   createCanvas(canvasWidth,canvasHeight);
-  background(125,125,125);
+  background(bgColor[0],bgColor[1],bgColor[2]);
   //noFill();
   //stroke(255);
 
@@ -232,7 +243,7 @@ function setup() {
 
 function draw() {
 
-  background(150,150,150)
+  background(bgColor[0],bgColor[1],bgColor[2])
 
   kn1.display()
 
