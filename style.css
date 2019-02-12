@@ -8,3 +8,8 @@ body {
   overflow: hidden;
   cursor: none;
 }
+
+p {
+  position: absolute;
+  color: white;
+}

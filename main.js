@@ -138,7 +138,7 @@ let savePlatform = {
   width : 10,
   x: canvasWidth - 10,
   y: 0,
-  speed: 5,
+  speed: 8,
   direction: "down",
   color: savePlatformColor,
   saved : false,
@@ -256,9 +256,6 @@ function nextLevel() {
 
 }
 
-function nextEnemy() {
-  target1 = new target()
-}
 
 function drawTrajectory() {
 
@@ -304,6 +301,7 @@ function loadSpeed() {
 }
 
 function displayScore() {
+  textAlign(CENTER,CENTER)
   fill(scoreColor[0],scoreColor[1],scoreColor[2])
   textSize(20)
   text(score,50,50)
