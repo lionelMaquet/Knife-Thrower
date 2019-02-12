@@ -87,7 +87,7 @@ class target {
     this.origSpeed = targetSpeed;
     this.speed = targetSpeed;
 
-    this.color = [0,0,0]
+    this.color = [255,255,255]
   }
 
   display() {
@@ -219,7 +219,7 @@ function setup() {
 
   angleMode(DEGREES);
   createCanvas(canvasWidth,canvasHeight);
-  background(255);
+  background(125,125,125);
   //noFill();
   //stroke(255);
 
@@ -232,7 +232,7 @@ function setup() {
 
 function draw() {
 
-  background(255)
+  background(125,125,125)
 
   kn1.display()
 
