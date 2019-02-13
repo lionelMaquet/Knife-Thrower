@@ -97,7 +97,7 @@ class target {
     this.x= targetX
 
 
-    this.width= 30;
+    this.width= 10 //30;
     this.height= targetHeight;
     this.origSpeed = targetSpeed;
     this.speed = targetSpeed;
