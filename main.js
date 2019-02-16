@@ -4,7 +4,7 @@ let canvasHeight = window.innerHeight;
 let maxSpeed = 30;
 
 let origTargetHeight = 200;
-let origtTargetX = 500;
+let origtTargetX = canvasWidth/2;
 let origTargetSpeed = 2;
 
 let targetHeight = origTargetHeight;
