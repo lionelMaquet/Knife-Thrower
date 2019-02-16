@@ -6,4 +6,13 @@
 body {
   background-color: black;
   overflow: hidden;
+  cursor: none;
+}
+
+a {
+  position: absolute;
+  color: white;
+  left: 30px;
+  bottom: 10px;
+  font-size: 30px;
 }

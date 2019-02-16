@@ -1,0 +1,30 @@
+body {
+  display: flex;
+  justify-content: center;
+}
+
+main {
+  width: 80%;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+}
+
+.info {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+}
+/*
+.details {
+  display: flex;
+  align-items: center;
+}*/
+
+
+
+.details img {
+  width: 200px;
+  margin-right: 20px;
+}
