@@ -7,7 +7,7 @@ let maxSpeed = 30;
 let origTargetHeight = 200;
 let origtTargetX = canvasWidth/1.5;
 let origTargetSpeed = 2;
-let spaceBetween = 100;
+
 
 let targetHeight = origTargetHeight;
 let targetX = origtTargetX;
@@ -25,11 +25,10 @@ let loadColor = [255,0,0];
 let savePlatformColor = [49,131,232];
 
 let targets = [];
-<<<<<<< HEAD
-let spaceBetweenTargets = 50 ;
-=======
 
->>>>>>> 8f801a994fc94239b0f8a0968918aee4b693b847
+let spaceBetween = 50;
+let numberOfTargets = 8;
+
 
 let congratulations = {
   list : ["Nice!", "Well done!", "Good job!", "Wow!", "What a boss!", "Amazing!", "Lovely!", "Incredible!","Prodigious!","Stunning!","Unbelievable!","Wonderful!","Awesome!","Marvelous!","Impressive!","Remarkable!","Mind-blowing!","Breathtaking!","Majestic!"],
@@ -87,11 +86,7 @@ class knife {
 }
 
 class target {
-<<<<<<< HEAD
-  constructor(x = targetX) {
-=======
   constructor(xPos = targetX) {
->>>>>>> 8f801a994fc94239b0f8a0968918aee4b693b847
 
     if (Math.random() > 0.5) {
       this.direction = "up"
@@ -105,19 +100,16 @@ class target {
       this.y = 0 - targetHeight
     }
 
-<<<<<<< HEAD
-    this.x= x
-=======
     this.x= xPos
->>>>>>> 8f801a994fc94239b0f8a0968918aee4b693b847
 
 
     this.width= 10 //30;
     this.height= targetHeight;
     this.origSpeed = targetSpeed;
-    this.speed = targetSpeed;
+    this.speed = targetSpeed
 
     this.color = targetColor;
+    this.hit = false;
   }
 
   display() {
@@ -198,7 +190,7 @@ let savePlatform = {
 function detectCollision(tar) {
 
   if ((kn1.x + kn1.width) > tar.x && (kn1.x - kn1.width) < (tar.x + tar.width) && (kn1.y - kn1.width) > tar.y && (kn1.y + kn1.width) < tar.y + tar.height) {
-    tar.hitTarget = true;
+    tar.hit = true;
     tar.color = hitTargetColor;
     return 'win'
   }
@@ -206,33 +198,48 @@ function detectCollision(tar) {
 }
 
 function displayNice() {
-  if (kn1.hitTarget == true) {
+
+  // if every target gets hit, set a congrat message and sound
+
+  if (targets.every(function(current) {
+    return current.hit
+  })) {
     if (congratulations.done == false) {
       randCong = congratulations.randomCong()
       congratulations.done = true;
       hitSound.play();
     }
+
     fill(255)
     textAlign(CENTER,CENTER)
     textSize(50)
     text(randCong, canvasWidth / 2,canvasHeight/2)
-
   }
+
+
+
 }
 
 function nextLevel() {
 
   if ((kn1.x - kn1.width) > canvasWidth || (kn1.y - kn1.width) > canvasHeight || (kn1.y + kn1.width) < 0 ) {
 
-
-    if (kn1.hitTarget == true) {
+    if (targets.every(function(current) {
+      return current.hit
+    })) {
 
 
       targetHeight-= 5;
       targetSpeed+= 0.4;
       //targetX += 10;
       kn1.reset();
-      target1 = new target();
+
+      targets = [];
+      for (let i = 0; i < numberOfTargets; i++) {
+        targets[i] = new target(origtTargetX + (spaceBetween * i))
+      }
+
+
       congratulations.done = false;
 
       score++;
@@ -242,6 +249,7 @@ function nextLevel() {
       }
 
       savePlatform.saved = false;
+
     }
 
     else if (savePlatform.saved == true) {
@@ -259,7 +267,10 @@ function nextLevel() {
       targetX = origtTargetX;
       targetSpeed = origTargetSpeed;
       kn1.reset();
-      target1 = new target();
+      targets = [];
+      for (let i = 0; i < numberOfTargets; i++) {
+        targets[i] = new target(origtTargetX + (spaceBetween * i))
+      }
       score=0
 
     }
@@ -345,8 +356,11 @@ function setup() {
   //noFill();
   //stroke(255);
 
-  targets[0] = new target();
-  targets[1] = new target(origtTargetX + spaceBetween);
+
+
+  for (let i = 0; i < numberOfTargets; i++) {
+    targets[i] = new target(origtTargetX + (spaceBetween * i))
+  }
 
   kn1 = new knife();
   //target1 = new target();
