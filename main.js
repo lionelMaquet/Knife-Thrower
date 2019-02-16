@@ -7,6 +7,7 @@ let maxSpeed = 30;
 let origTargetHeight = 200;
 let origtTargetX = canvasWidth/1.5;
 let origTargetSpeed = 2;
+let spaceBetween = 100;
 
 let targetHeight = origTargetHeight;
 let targetX = origtTargetX;
@@ -24,7 +25,11 @@ let loadColor = [255,0,0];
 let savePlatformColor = [49,131,232];
 
 let targets = [];
+<<<<<<< HEAD
 let spaceBetweenTargets = 50 ;
+=======
+
+>>>>>>> 8f801a994fc94239b0f8a0968918aee4b693b847
 
 let congratulations = {
   list : ["Nice!", "Well done!", "Good job!", "Wow!", "What a boss!", "Amazing!", "Lovely!", "Incredible!","Prodigious!","Stunning!","Unbelievable!","Wonderful!","Awesome!","Marvelous!","Impressive!","Remarkable!","Mind-blowing!","Breathtaking!","Majestic!"],
@@ -82,7 +87,11 @@ class knife {
 }
 
 class target {
+<<<<<<< HEAD
   constructor(x = targetX) {
+=======
+  constructor(xPos = targetX) {
+>>>>>>> 8f801a994fc94239b0f8a0968918aee4b693b847
 
     if (Math.random() > 0.5) {
       this.direction = "up"
@@ -96,7 +105,11 @@ class target {
       this.y = 0 - targetHeight
     }
 
+<<<<<<< HEAD
     this.x= x
+=======
+    this.x= xPos
+>>>>>>> 8f801a994fc94239b0f8a0968918aee4b693b847
 
 
     this.width= 10 //30;
@@ -182,11 +195,11 @@ let savePlatform = {
 
 }
 
-function detectCollision() {
+function detectCollision(tar) {
 
-  if ((kn1.x + kn1.width) > target1.x && (kn1.x - kn1.width) < (target1.x + target1.width) && (kn1.y - kn1.width) > target1.y && (kn1.y + kn1.width) < target1.y + target1.height) {
-    kn1.hitTarget = true;
-    target1.color = hitTargetColor;
+  if ((kn1.x + kn1.width) > tar.x && (kn1.x - kn1.width) < (tar.x + tar.width) && (kn1.y - kn1.width) > tar.y && (kn1.y + kn1.width) < tar.y + tar.height) {
+    tar.hitTarget = true;
+    tar.color = hitTargetColor;
     return 'win'
   }
 
@@ -332,9 +345,11 @@ function setup() {
   //noFill();
   //stroke(255);
 
+  targets[0] = new target();
+  targets[1] = new target(origtTargetX + spaceBetween);
 
   kn1 = new knife();
-  target1 = new target();
+  //target1 = new target();
 
 
 }
@@ -345,9 +360,13 @@ function draw() {
 
   kn1.display()
 
-  target1.display()
+  for (eachTarget of targets) {
+    eachTarget.display()
+    eachTarget.move()
+    detectCollision(eachTarget)
+  }
 
-  target1.move()
+
 
 
   kn1.throw()
@@ -356,7 +375,9 @@ function draw() {
 
   drawTrajectory()
 
-  detectCollision()
+
+
+
 
   nextLevel()
 
