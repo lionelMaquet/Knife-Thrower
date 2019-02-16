@@ -23,6 +23,8 @@ let hitTargetColor = [0,255,44]
 let loadColor = [255,0,0];
 let savePlatformColor = [49,131,232];
 
+let targets = [];
+let spaceBetweenTargets = 50 ;
 
 let congratulations = {
   list : ["Nice!", "Well done!", "Good job!", "Wow!", "What a boss!", "Amazing!", "Lovely!", "Incredible!","Prodigious!","Stunning!","Unbelievable!","Wonderful!","Awesome!","Marvelous!","Impressive!","Remarkable!","Mind-blowing!","Breathtaking!","Majestic!"],
@@ -80,7 +82,7 @@ class knife {
 }
 
 class target {
-  constructor() {
+  constructor(x = targetX) {
 
     if (Math.random() > 0.5) {
       this.direction = "up"
@@ -94,7 +96,7 @@ class target {
       this.y = 0 - targetHeight
     }
 
-    this.x= targetX
+    this.x= x
 
 
     this.width= 10 //30;
@@ -308,12 +310,7 @@ function displayScore() {
   text(bestScore, 50,100)
 }
 
-
-
-
-
-
-
+/************/
 
 function preload() {
 
@@ -351,6 +348,7 @@ function draw() {
   target1.display()
 
   target1.move()
+
 
   kn1.throw()
 
