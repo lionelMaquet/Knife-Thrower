@@ -5,12 +5,9 @@ let canvasHeight = window.innerHeight;
 let maxSpeed = 30;
 
 let origTargetHeight = 200;
-<<<<<<< HEAD
-let origtTargetX = canvasWidth/2;
-=======
 let origtTargetX = canvasWidth/1.5;
->>>>>>> 9fb33fbd8d35af7716b822a87c8516f1961058d4
 let origTargetSpeed = 2;
+let spaceBetween = 100;
 
 let targetHeight = origTargetHeight;
 let targetX = origtTargetX;
@@ -26,6 +23,8 @@ let targetColor = [255,255,255];
 let hitTargetColor = [0,255,44]
 let loadColor = [255,0,0];
 let savePlatformColor = [49,131,232];
+
+let targets = [];
 
 
 let congratulations = {
@@ -84,7 +83,7 @@ class knife {
 }
 
 class target {
-  constructor() {
+  constructor(xPos = targetX) {
 
     if (Math.random() > 0.5) {
       this.direction = "up"
@@ -98,7 +97,7 @@ class target {
       this.y = 0 - targetHeight
     }
 
-    this.x= targetX
+    this.x= xPos
 
 
     this.width= 10 //30;
@@ -184,11 +183,11 @@ let savePlatform = {
 
 }
 
-function detectCollision() {
+function detectCollision(tar) {
 
-  if ((kn1.x + kn1.width) > target1.x && (kn1.x - kn1.width) < (target1.x + target1.width) && (kn1.y - kn1.width) > target1.y && (kn1.y + kn1.width) < target1.y + target1.height) {
-    kn1.hitTarget = true;
-    target1.color = hitTargetColor;
+  if ((kn1.x + kn1.width) > tar.x && (kn1.x - kn1.width) < (tar.x + tar.width) && (kn1.y - kn1.width) > tar.y && (kn1.y + kn1.width) < tar.y + tar.height) {
+    tar.hitTarget = true;
+    tar.color = hitTargetColor;
     return 'win'
   }
 
@@ -339,9 +338,11 @@ function setup() {
   //noFill();
   //stroke(255);
 
+  targets[0] = new target();
+  targets[1] = new target(origtTargetX + spaceBetween);
 
   kn1 = new knife();
-  target1 = new target();
+  //target1 = new target();
 
 
 }
@@ -352,9 +353,13 @@ function draw() {
 
   kn1.display()
 
-  target1.display()
+  for (eachTarget of targets) {
+    eachTarget.display()
+    eachTarget.move()
+    detectCollision(eachTarget)
+  }
 
-  target1.move()
+
 
   kn1.throw()
 
@@ -362,7 +367,9 @@ function draw() {
 
   drawTrajectory()
 
-  detectCollision()
+
+
+
 
   nextLevel()
 
